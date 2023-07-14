@@ -71,7 +71,6 @@ private void Vehiculo(String na_veh, String colorv, String anio_veh){
     Vehiculo nuevo = new Vehiculo(na_veh, colorv, anio_veh);
     //anado el objeto dentro del array
     info.add(nuevo);
-    //String filePath = "detalle.txt";
     try{
             BufferedWriter writer = new BufferedWriter(new FileWriter("detalle.txt", true));
             writer.write("Marca: "+na_veh + ", Color: " +colorv+ ", Año: "  +anio_veh );
