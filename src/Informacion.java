@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 
@@ -27,31 +25,12 @@ public class Informacion {
         //ESPACIO DE ALAMCENAMIENTO
         info = new ArrayList();
     guardarButton.addActionListener(new ActionListener() {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             String na_veh=name_vehi.getText();
             String colorv=color_vehi.getText();
             String anio_veh= anio_vehi.getText();
-
-            //creo objeto
-            Vehiculo nuevo = new Vehiculo(na_veh, colorv, anio_veh);
-
-            //anado el objeto dentro del array
-            info.add(nuevo);
-
-            String filePath = "detalle.txt";
-
-            try(
-                    FileOutputStream fileOut = new FileOutputStream(filePath);
-                    ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
-            ){
-                objOut.writeObject(nuevo);
-                System.out.println("Archivo guardado correctamente");
-            }catch (IOException ex){
-                throw new RuntimeException(ex);
-            }
-
+            Vehiculo(na_veh, colorv,anio_veh);
             // Borra el contenido de los JTextField
             name_vehi.setText("");
             color_vehi.setText("");
@@ -71,8 +50,6 @@ public class Informacion {
                 anio_vehi.setText(detalle.getAnio_veh());
 
             }
-
-
         }
     });
     siguienteButton.addActionListener(new ActionListener() {
@@ -86,13 +63,25 @@ public class Informacion {
                 color_vehi.setText(detale.getColorv());
                 anio_vehi.setText(detale.getAnio_veh());
             }
-
         }
     });
-
-
 }
-
+private void Vehiculo(String na_veh, String colorv, String anio_veh){
+    //creo objeto
+    Vehiculo nuevo = new Vehiculo(na_veh, colorv, anio_veh);
+    //anado el objeto dentro del array
+    info.add(nuevo);
+    //String filePath = "detalle.txt";
+    try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter("detalle.txt", true));
+            writer.write("Marca: "+na_veh + ", Color: " +colorv+ ", Año: "  +anio_veh );
+            writer.newLine();
+            writer.close();
+        System.out.println("Datos guardados en detalle.txt");
+    }catch (IOException ex){
+        ex.printStackTrace();
+    }
+}
     public static void main(String[] args) {
         JFrame frame = new JFrame("vehiculos");
         frame.setContentPane(new Informacion().rootPanel);
